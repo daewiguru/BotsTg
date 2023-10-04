@@ -36,17 +36,19 @@ public class TelegramBot extends TelegramLongPollingBot {
             } catch (TelegramApiException e){
                 throw new RuntimeException(e);
             }
+        } else {
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setChatId(chatId);
+            sendMessage.setText(text);
+
+            try {
+                this.execute(sendMessage);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chatId);
-        sendMessage.setText(text);
 
-        try {
-            this.execute(sendMessage);
-        } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
-        }
 
 
     }
