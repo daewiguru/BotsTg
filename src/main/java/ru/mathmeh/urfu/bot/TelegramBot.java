@@ -19,6 +19,25 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         String chatId = update.getMessage().getChatId().toString();
         String text = update.getMessage().getText();
+
+        // help command answer
+        SendMessage HelpMessage = new SendMessage(chatId, "Привет! Я бот, который поможет тебе в чем-то.");
+        // start command answer
+        SendMessage StartMessage = new SendMessage(chatId, "Начинаем работу");
+        if ("/start".equals(text)){
+            try {
+                this.execute(StartMessage);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            }
+        } else if ("/help".equals(text)) {
+            try {
+                this.execute(HelpMessage);
+            } catch (TelegramApiException e){
+                throw new RuntimeException(e);
+            }
+        }
+
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
         sendMessage.setText(text);
