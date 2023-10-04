@@ -24,6 +24,8 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage HelpMessage = new SendMessage(chatId, "Привет! Я бот, который поможет тебе в чем-то.");
         // start command answer
         SendMessage StartMessage = new SendMessage(chatId, "Начинаем работу");
+        // TODO create functions instead of if construction body
+
         if ("/start".equals(text)){
             try {
                 this.execute(StartMessage);
