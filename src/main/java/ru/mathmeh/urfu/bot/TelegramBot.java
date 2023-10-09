@@ -3,19 +3,29 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+
+
+
+
 public class TelegramBot extends TelegramLongPollingBot {
     private final TelegramMessageHandler messageHandler;
+
+    
     public TelegramBot(){
         messageHandler = new TelegramMessageHandler();
     }
     @Override
     public String getBotUsername() {
-        return "name.bot";
+        return Config.BOT_NAME;
     }
+
+
+
     @Override
     public String getBotToken() {
-        return "token.bot";
+        return Config.BOT_TOKEN;
     }
+
     @Override
     public void onUpdateReceived(Update update) {
         try {
@@ -24,4 +34,6 @@ public class TelegramBot extends TelegramLongPollingBot {
             throw new RuntimeException(e);
         }
     }
+
 }
+
