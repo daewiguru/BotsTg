@@ -4,7 +4,12 @@ package ru.mathmeh.urfu.bot;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-
+/**
+ *class TelegramMessageHandler
+ * @author lendys(Yaroslav Prisepnyj)
+ * @version 1.0
+ * parsing message
+ */
 public class TelegramMessageHandler {
     public SendMessage parse(Message message){
         SendMessage.SendMessageBuilder sendMessageBuilder = SendMessage.builder()
