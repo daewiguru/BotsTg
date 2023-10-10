@@ -10,7 +10,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class TelegramBot extends TelegramLongPollingBot {
     private final TelegramMessageHandler messageHandler;
 
-    
+
+    /**
+     * Initialization bot session, where config class fields are used
+     */
+
     public TelegramBot(){
         messageHandler = new TelegramMessageHandler();
     }

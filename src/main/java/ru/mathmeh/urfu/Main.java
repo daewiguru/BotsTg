@@ -8,6 +8,10 @@ import ru.mathmeh.urfu.bot.TelegramBot;
 
 public class Main {
     public static void main(String[] args) throws TelegramApiException {
+
+        /**
+         * Loading data from config, and then create telegram bot session
+         */
         Config.load();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
         telegramBotsApi.registerBot(new TelegramBot());
