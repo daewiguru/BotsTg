@@ -32,7 +32,7 @@ public class Config {
 
     public static void load() {
         Properties botSettings = new Properties();
-        try (FileInputStream is = new FileInputStream(new File(CONFIGURATION_BOT_FILE))){
+        try (FileInputStream is = new FileInputStream(CONFIGURATION_BOT_FILE)){
             botSettings.load(is);
             is.close();
             System.out.print("Config was loaded successfully");
@@ -42,7 +42,7 @@ public class Config {
         BOT_NAME = botSettings.getProperty("BotName", " ");// TODO fill form
         BOT_TOKEN = botSettings.getProperty("BotToken", " ");
     }
-    ;
+
 
 
 
