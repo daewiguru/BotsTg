@@ -1,2 +1,5 @@
 .idea
-.config/config.properties
+.idea. *.iml
+.config
+.target
+
