@@ -1,60 +1,46 @@
 package ru.mathmeh.urfu.bot;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+/**
+ *class LogicTest
+ * @author lendys(Yaroslav Prisepnyj)
+ * testing commands \start and \help
+ */
+
 
 public class LogicTest {
-
-    private Logic logic;
-
-    @Before
-    public void setUp() {
-        Bot mockBot = new Bot() {
-            @Override
-            public void setBotToken(String token) {
-
-            }
-
-            @Override
-            public void setBotName(String name) {
-
-            }
-
-            public void receiveMessage(String userId, String message) {
-
-            }
-
-            public void sendMessage(String userId, String message) {
-
-            }
-        };
-        logic = new Logic(mockBot) {
-            @Override
-            public void receiveMessage(String userId, String message) {
-
-            }
-
-            @Override
-            public void sendMessage(String userId, String message) {
-
-            }
-        };
+    /**
+     * method testStartCommand
+     * testing commands \start
+     */
+    @Test
+    public void testStartCommand() {
+        Logic logic = new Logic();
+        String result = logic.messageHandler("/start");
+        Assertions.assertEquals("Hello, im new bots", result);
+    }
+    /**
+     * method testHelpCommand
+     * testing commands \help
+     */
+    @Test
+    public void testHelpCommand() {
+        Logic logic = new Logic();
+        String result = logic.messageHandler("/help");
+        Assertions.assertEquals("I'm a bot that mirrors a message.", result);
     }
 
+    /**
+     * method testDefaultCase
+     * testing commands default
+     */
     @Test
-    public void testSetBotToken() {
-        String expectedToken = "testToken";
-        logic.setBotToken(expectedToken);
-        String actualToken = logic.getBotToken();
-        assertEquals(expectedToken, actualToken); // Проверяем, что установленный и полученный токены совпадают
-    }
-
-    @Test
-    public void testSetBotName() {
-        String expectedName = "TestBotName";
-        logic.setBotName(expectedName);
-        String actualName = logic.getBotName();
-        assertEquals(expectedName, actualName); // Проверяем, что установленное и полученное имя совпадают
+    public void testDefaultCase() {
+        Logic logic = new Logic();
+        String result = logic.messageHandler("Some other message");
+        Assertions.assertEquals("Some other message", result);
+>>>>>>> c1948a1 (add logic and logic test)
     }
 }
