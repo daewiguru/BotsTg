@@ -41,6 +41,6 @@ public class LogicTest {
         Logic logic = new Logic();
         String result = logic.messageHandler("Some other message");
         Assertions.assertEquals("Some other message", result);
->>>>>>> c1948a1 (add logic and logic test)
+
     }
 }

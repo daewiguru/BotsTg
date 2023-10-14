@@ -1,15 +1,21 @@
 package ru.mathmeh.urfu.bot;
 
 /**
- * class TelegramMessageHandler
+ * class MessageHandler
  * @author lendys(Yaroslav Prisepnyj)
  * @version 1.0
- * parsing message
  */
 public class Logic {
+
     public Logic(){
 
     }
+
+    /**
+     * This method realize cross-platform logic of bots
+     * @param message text of user`s message
+     * @return tet of bot message
+     */
     public String messageHandler(String message){
         switch (message){
             case "/start" -> {
