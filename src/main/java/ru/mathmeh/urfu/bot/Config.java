@@ -13,12 +13,18 @@ public class Config {
     public static final String CONFIGURATION_BOT_FILE = "config/config.properties";
     //TODO create a database, and link it with bot
     //public static final String CONFIGURATION_DB_FILE = " ";
+    /**
+     * A constructor for the Config class.
+     */
+    public Config() {
+        load();
+    }
 
     /**
      * Constant fields of the class are strings that contain data from the config and are used to run the bot
      */
-    public static String BOT_NAME;
-    public static String BOT_TOKEN;
+    public String BOT_NAME;
+    public String BOT_TOKEN;
 
     //TODO: link database to bot
     /*public static String DB_URL;
@@ -30,7 +36,7 @@ public class Config {
      *
      */
 
-    public static void load() {
+    public void load() {
         Properties botSettings = new Properties();
         try (FileInputStream is = new FileInputStream(CONFIGURATION_BOT_FILE)){
             botSettings.load(is);

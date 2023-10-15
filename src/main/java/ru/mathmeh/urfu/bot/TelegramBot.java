@@ -22,13 +22,15 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
         telegramLogic= new Logic();
     }
 
+    Config config = new Config();
+
     /**
      * This method gives us bot name which is read from config
      * @return bot name
      */
     @Override
     public String getBotUsername() {
-        return Config.BOT_NAME;
+        return config.BOT_NAME;
     }
   
     /**
@@ -38,7 +40,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
 
     @Override
     public String getBotToken() {
-        return Config.BOT_TOKEN;
+        return config.BOT_TOKEN;
     }
 
 
