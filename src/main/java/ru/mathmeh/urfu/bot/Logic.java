@@ -28,6 +28,5 @@ public class Logic {
                 return message;
             }
         }
-
     }
 }

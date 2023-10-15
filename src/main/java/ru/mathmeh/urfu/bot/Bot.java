@@ -1,5 +1,6 @@
 package ru.mathmeh.urfu.bot;
 
+
 /**
  * This is an interface for all bots realization
  */
@@ -13,5 +14,3 @@ public interface Bot {
     // and receiveMessage method will have platform-depend realization
     void sendMessage(Long id, String message);
 }
-
-

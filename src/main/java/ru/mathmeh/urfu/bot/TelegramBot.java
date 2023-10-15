@@ -10,6 +10,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * This is realization of Telegram Bot
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot{
+
     /**
      * Hidden logic
      */
@@ -29,19 +30,23 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
     public String getBotUsername() {
         return Config.BOT_NAME;
     }
+  
     /**
      * This method gives us bot token which is read from config
      * @return bot token
      */
+
     @Override
     public String getBotToken() {
         return Config.BOT_TOKEN;
     }
 
+
     /**
      * This is a telegram bot method which react on new messages
      * @param update This is a telegram API object that helps us interact with chat events
      */
+
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
@@ -53,11 +58,13 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
         }
     }
 
+
     /**
      * This method creates a message and send it to user
      * @param id chatId or userId
      * @param message text of send message
      */
+
     @Override
     public void sendMessage(Long id, String message) {
         SendMessage msg = SendMessage.builder()
