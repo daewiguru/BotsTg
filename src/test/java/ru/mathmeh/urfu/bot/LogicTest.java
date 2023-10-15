@@ -1,4 +1,5 @@
 package ru.mathmeh.urfu.bot;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

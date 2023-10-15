@@ -5,22 +5,48 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+/**
+ * This is realization of Telegram Bot
+ */
 public class TelegramBot extends TelegramLongPollingBot implements Bot{
+
+    /**
+     * Hidden logic
+     */
     private final Logic telegramLogic;
     /**
-     * Initialization bot session, where config class fields are used
+     * Constructor of Telegram Bot class
      */
     public TelegramBot(){
         telegramLogic= new Logic();
     }
+
+    /**
+     * This method gives us bot name which is read from config
+     * @return bot name
+     */
     @Override
     public String getBotUsername() {
         return Config.BOT_NAME;
     }
+  
+    /**
+     * This method gives us bot token which is read from config
+     * @return bot token
+     */
+
     @Override
     public String getBotToken() {
         return Config.BOT_TOKEN;
     }
+
+
+    /**
+     * This is a telegram bot method which react on new messages
+     * @param update This is a telegram API object that helps us interact with chat events
+     */
+
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage()) {
@@ -31,6 +57,14 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
             }
         }
     }
+
+
+    /**
+     * This method creates a message and send it to user
+     * @param id chatId or userId
+     * @param message text of send message
+     */
+
     @Override
     public void sendMessage(Long id, String message) {
         SendMessage msg = SendMessage.builder()
