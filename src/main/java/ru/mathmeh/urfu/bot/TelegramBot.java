@@ -14,12 +14,12 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
     /**
      * Hidden logic
      */
-    private final Logic telegramLogic;
+    private final Logic logic;
     /**
      * Constructor of Telegram Bot class
      */
     public TelegramBot(){
-        telegramLogic= new Logic();
+        logic = new Logic();
     }
 
     Config config = new Config();
@@ -30,7 +30,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
      */
     @Override
     public String getBotUsername() {
-        return config.BOT_NAME;
+        return config.botName;
     }
   
     /**
@@ -40,7 +40,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
 
     @Override
     public String getBotToken() {
-        return config.BOT_TOKEN;
+        return config.botToken;
     }
 
 
@@ -54,7 +54,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
         if (update.hasMessage()) {
             Message m = update.getMessage();
             if (m.hasText()) {
-                String response = telegramLogic.messageHandler(m.getText());
+                String response = logic.handleMessage(m.getText());
                 sendMessage(m.getChatId(), response);
             }
         }

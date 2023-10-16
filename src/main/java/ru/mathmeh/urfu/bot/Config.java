@@ -1,6 +1,4 @@
 package ru.mathmeh.urfu.bot;
-
-import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
@@ -17,19 +15,18 @@ public class Config {
      * A constructor for the Config class.
      */
     public Config() {
-        load();
     }
 
     /**
      * Constant fields of the class are strings that contain data from the config and are used to run the bot
      */
-    public String BOT_NAME;
-    public String BOT_TOKEN;
+    public String botName;
+    public String botToken;
 
     //TODO: link database to bot
-    /*public static String DB_URL;
-    public static String DB_USER;
-    public static String DB_PASSWORD;*/
+    //public static String DB_URL;
+    // public static String DB_USER;
+    // public static String DB_PASSWORD;
 
     /**
      *A method for loading data from a bot config that uses the properties library
@@ -45,11 +42,7 @@ public class Config {
         } catch (Exception e){
             System.out.print("Config was not load");
         }
-        BOT_NAME = botSettings.getProperty("BotName", " ");// TODO fill form
-        BOT_TOKEN = botSettings.getProperty("BotToken", " ");
+        botName = botSettings.getProperty("BotName", " ");// TODO fill form
+        botToken = botSettings.getProperty("BotToken", " ");
     }
-
-
-
-
 }

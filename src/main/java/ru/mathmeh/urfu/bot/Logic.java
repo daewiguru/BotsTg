@@ -1,7 +1,7 @@
 package ru.mathmeh.urfu.bot;
 
 /**
- * class MessageHandler
+ * This class implements the bot logic
  * @author lendys(Yaroslav Prisepnyj)
  * @version 1.0
  */
@@ -16,7 +16,7 @@ public class Logic {
      * @param message text of user`s message
      * @return tet of bot message
      */
-    public String messageHandler(String message){
+    public String handleMessage(String message){
         switch (message){
             case "/start" -> {
                 return "Hello, im new bots";
