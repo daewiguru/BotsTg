@@ -4,10 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 /**
- *class LogicTest
- * this class tests logic class
+ * This class tests logic class
+ * testing commands \start and \help and return message
  * @author lendys(Yaroslav Prisepnyj)
- * testing commands \start and \help and retern message
  */
 
 
