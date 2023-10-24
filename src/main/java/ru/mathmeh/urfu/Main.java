@@ -12,8 +12,7 @@ import ru.mathmeh.urfu.bot.TelegramBot;
 public class Main {
     public static void main(String[] args) {
         try {
-            Config config = new Config();
-            config.load();
+
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             telegramBotsApi.registerBot(new TelegramBot());
         } catch (TelegramApiException e) {
