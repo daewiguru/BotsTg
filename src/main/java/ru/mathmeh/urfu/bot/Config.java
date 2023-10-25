@@ -15,7 +15,6 @@ public class Config {
      * A constructor for the Config class.
      */
     public Config() {
-        load();
     }
 
     /**

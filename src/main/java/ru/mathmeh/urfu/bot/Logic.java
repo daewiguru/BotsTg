@@ -1,33 +1,22 @@
 package ru.mathmeh.urfu.bot;
 
-import java.util.List;
-
 /**
- *  * The Logic class handles user commands and manages notes.
- *  * This class is essentially the controller of the bot, as it receives
- *  * user input, processes it, interacts with the NoteManager to manipulate
- *  * data, and then forms an appropriate response. The user commands it can handle
- *  * include: /start, /help, /table, /add, /edit, /del and other unsupported cases.
+ * This class implements the bot logic
+ * @author lendys(Yaroslav Prisepnyj)
+ * @version 1.0
  */
 public class Logic {
-    private NoteManager noteManager;
 
-    /**
-     * /**
-     *      * Constructor for the Logic class.
-     *      * Initializes a new NoteManager object that'll be used for managing the notes.
-     *      */
+    public Logic(){
 
-    public Logic() {
-        noteManager = new NoteManager();
     }
 
     /**
-     * Handles user messages and performs actions based on the command.
-     *
-     * @param message The user's message.
-     * @return The bot's response.
+     * This method realize cross-platform logic of bots
+     * @param message text of user`s message
+     * @return tet of bot message
      */
+
     public String handleMessage(String message) {
         String[] parts = message.split(" ");
         String command = parts[0];
