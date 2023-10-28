@@ -34,9 +34,16 @@ public class Logic {
 
         switch (command) {
             case "/start":
-                return "Hello, I'm a simple note bot.";
+                return "Hello, I'm a simple note bot.\n" +
+                        "/help";
             case "/help":
-                return "I'm a bot for managing notes. You can add, edit, delete, and view your notes.";
+                return """
+                        I'm a bot for managing notes. You can add, edit, delete, and view your notes.
+                        /table - view your notes
+                        /add - add a new entry
+                        /del - delete an entry (specify the entry number)
+                        /edit - edit an entry (specify the entry number)""";
+
             case "/table":
                 List<Note> notes = noteManager.getNotes();
                 StringBuilder response = new StringBuilder("Your notes:\n");
