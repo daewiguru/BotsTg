@@ -60,4 +60,3 @@ public class NoteManager {
         notes.removeIf(note -> note.getId() == id);
     }
 }
-
