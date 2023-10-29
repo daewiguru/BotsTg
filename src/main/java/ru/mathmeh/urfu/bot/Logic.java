@@ -1,14 +1,17 @@
 package ru.mathmeh.urfu.bot;
 
+import java.util.List;
+
 /**
  * This class implements the bot logic
  * @author lendys(Yaroslav Prisepnyj)
  * @version 1.0
  */
 public class Logic {
+    NoteManager noteManager;
 
     public Logic(){
-
+        noteManager = new NoteManager();
     }
 
     /**
