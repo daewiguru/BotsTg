@@ -15,14 +15,14 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
      * Hidden logic
      */
     private final Logic logic;
-    private final Config config;
     /**
      * Constructor of Telegram Bot class
      */
     public TelegramBot(){
         logic = new Logic();
-        config = new Config();
     }
+
+    Config config = new Config();
 
     /**
      * This method gives us bot name which is read from config
