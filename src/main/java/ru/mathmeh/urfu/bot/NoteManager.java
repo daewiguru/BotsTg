@@ -1,14 +1,16 @@
 package ru.mathmeh.urfu.bot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The NoteManager class manages a collection of notes, providing methods for adding,
  * editing, and deleting notes.
  */
 public class NoteManager {
-    private List<Note> notes;
+    private final Map<Integer, Note> notes;
     private int nextId;
 
     /**
@@ -16,7 +18,7 @@ public class NoteManager {
      * the next available note identifier.
      */
     public NoteManager() {
-        notes = new ArrayList<>();
+        notes = new HashMap<>();
         nextId = 1;
     }
 
@@ -25,7 +27,7 @@ public class NoteManager {
      * @return A list of all notes.
      */
     public List<Note> getNotes() {
-        return notes;
+        return new ArrayList<>(notes.values());
     }
 
     /**
@@ -34,7 +36,7 @@ public class NoteManager {
      */
     public void addNote(String text) {
         Note note = new Note(nextId, text);
-        notes.add(note);
+        notes.put(nextId, note);
         nextId++;
     }
 
@@ -43,12 +45,10 @@ public class NoteManager {
      * @param id   The identifier of the note to be edited.
      * @param newText The new text content for the note.
      */
-    public void editNote(int id, String newText) {
-        for (Note note : notes) {
-            if (note.getId() == id) {
-                note.text = newText;
-                return;
-            }
+    public void editNote(int id, String newText){
+        if(notes.containsKey(id)){
+            Note note = notes.get(id);
+            note.setText(newText);
         }
     }
 
@@ -57,6 +57,6 @@ public class NoteManager {
      * @param id The identifier of the note to be deleted.
      */
     public void deleteNote(int id) {
-        notes.removeIf(note -> note.getId() == id);
+        notes.remove(id);
     }
 }

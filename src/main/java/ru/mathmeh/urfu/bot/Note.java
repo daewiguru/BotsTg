@@ -4,8 +4,8 @@ package ru.mathmeh.urfu.bot;
  * The Note class represents a single note with a unique identifier and text content.
  */
 public class Note {
-    private int id;
-    String text;
+    private final int id;
+    private String text;
 
     /**
      * Constructs a new note with the given identifier and text content.
@@ -31,5 +31,8 @@ public class Note {
      */
     public String getText() {
         return text;
+    }
+    public void setText(String newText){
+        this.text = newText;
     }
 }

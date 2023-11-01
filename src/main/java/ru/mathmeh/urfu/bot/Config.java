@@ -21,8 +21,15 @@ public class Config {
     /**
      * Constant fields of the class are strings that contain data from the config and are used to run the bot
      */
-    public String botName;
-    public String botToken;
+    private String botName;
+    private String botToken;
+
+    public String getBotName() {
+        return botName;
+    }
+    public String getBotToken() {
+        return botToken;
+    }
 
     //TODO: link database to bot
     //public static String DB_URL;
@@ -46,4 +53,5 @@ public class Config {
         botName = botSettings.getProperty("BotName", " ");// TODO fill form
         botToken = botSettings.getProperty("BotToken", " ");
     }
+
 }
