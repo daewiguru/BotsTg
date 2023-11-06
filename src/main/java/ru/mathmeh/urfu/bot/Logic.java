@@ -26,19 +26,19 @@ public class Logic {
 
         switch (command) {
             case "/start":
-                return "Hello, I'm a simple note bot.\n" +
+                return "Привет я простой бот для записей, можешь записывать в меня всё что угодно,\n" +
+                        "а еще удалять и редактировать записи. Ежедневник в твоем распоряжении.\n" +
                         "/help";
             case "/help":
                 return """
-                        I'm a bot for managing notes. You can add, edit, delete, and view your notes.
-                        /table - view your notes
-                        /add - add a new entry
-                        /del - delete an entry (specify the entry number)
-                        /edit - edit an entry (specify the entry number)""";
+                        /table - команда для вывода списка записей
+                        /add - добавление записи
+                        /del - удаление записи (указывайте номер записи, можно посмотреть в списке)
+                        /edit - изменение записи (указывайте номер записи, можно посмотреть в списке)""";
 
             case "/table":
                 List<Note> notes = noteManager.getNotes();
-                StringBuilder response = new StringBuilder("Your notes:\n");
+                StringBuilder response = new StringBuilder("Вот ваши записи:\n");
                 for (Note note : notes) {
                     response.append(note.getId()).append(". ").append(note.getText()).append("\n");
                 }
@@ -47,9 +47,9 @@ public class Logic {
                 if (parts.length >= 2) {
                     String text = message.substring(command.length() + 1);
                     noteManager.addNote(text);
-                    return "Note added!";
+                    return "Запись добавлена^_^";
                 } else {
-                    return "Please provide a text for the note.";
+                    return "Пожалуйста, укажите запись.";
                 }
             case "/edit":
                 if (parts.length >= 2) {
@@ -57,27 +57,27 @@ public class Logic {
                         int id = Integer.parseInt(parts[1]);
                         String text = message.substring(command.length() + 2 + parts[1].length());
                         noteManager.editNote(id, text);
-                        return "Note edited!";
+                        return "Запись изменена!";
                     } catch (NumberFormatException e) {
-                        return "Invalid note ID.";
+                        return "Неревный номер записи.";
                     }
                 } else {
-                    return "Please provide a note ID and text for editing.";
+                    return "Пожалуйста введите номер записи и изменения";
                 }
             case "/del":
                 if (parts.length >= 2) {
                     try {
                         int id = Integer.parseInt(parts[1]);
                         noteManager.deleteNote(id);
-                        return "Note deleted!";
+                        return "Запись удалена!";
                     } catch (NumberFormatException e) {
-                        return "Invalid note ID.";
+                        return "Неверный номер записи.";
                     }
                 } else {
-                    return "Please provide a note ID for deletion.";
+                    return "Укажите номер записи для удаления.";
                 }
             default:
-                return "I don't understand the command.";
+                return "Следуй по командам";
 
         }
     }

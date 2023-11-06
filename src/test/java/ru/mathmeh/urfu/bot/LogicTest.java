@@ -30,7 +30,7 @@ public class LogicTest {
         logic.handleMessage("/add Test Note");
         String response = logic.handleMessage("/table");
 
-        assertTrue(response.startsWith("Your notes:"));
+        assertTrue(response.startsWith("Вот ваши записи:"));
         assertTrue(response.contains("1. Test Note"));
     }
     /**
@@ -40,7 +40,7 @@ public class LogicTest {
     @Test
     public void testAddCommand() {
         String response = logic.handleMessage("/add Test Note");
-        assertEquals("Note added!", response);
+        assertEquals("Запись добавлена^_^", response);
         assertTrue(logic.handleMessage("/table").contains("1. Test Note"));
 
     }
@@ -51,7 +51,7 @@ public class LogicTest {
     @Test
     public void testAddCommandWithoutText() {
         String response = logic.handleMessage("/add");
-        assertEquals("Please provide a text for the note.", response);
+        assertEquals("Пожалуйста, укажите запись.", response);
         assertTrue(logic.handleMessage("/table").contains(" "));
     }
 
@@ -64,7 +64,7 @@ public class LogicTest {
     public void testEditCommand() {
         logic.handleMessage("/add Test Note");
         String response = logic.handleMessage("/edit 1 New Text");
-        assertEquals("Note edited!", response);
+        assertEquals("Запись изменена!", response);
         assertTrue(logic.handleMessage("/table").contains("1. New Text"));
     }
     /**
@@ -74,7 +74,7 @@ public class LogicTest {
     @Test
     public void testEditCommandInvalidId() {
         String response = logic.handleMessage("/edit not_an_integer New Text");
-        assertEquals("Invalid note ID.", response);
+        assertEquals("Неревный номер записи.", response);
     }
     /**
      * This test adds a test note using the /add command and then executes the /del command to delete
@@ -85,7 +85,7 @@ public class LogicTest {
     public void testDeleteCommand() {
         logic.handleMessage("/add Test Note");
         String response = logic.handleMessage("/del 1");
-        assertEquals("Note deleted!", response);
+        assertEquals("Запись удалена!", response);
         assertTrue(logic.handleMessage("/table").contains(" "));
     }
     /**
@@ -96,7 +96,7 @@ public class LogicTest {
     public void testDeleteCommandInvalidId() {
         logic.handleMessage("/add Test Note");
         String response = logic.handleMessage("/del not_an_integer");
-        assertEquals("Invalid note ID.", response);
+        assertEquals("Неверный номер записи.", response);
         assertTrue(logic.handleMessage("/table").contains("1. Test Note"));
 
     }
@@ -106,7 +106,7 @@ public class LogicTest {
     @Test
     public void testUnknownCommand() {
         String response = logic.handleMessage("/unknown");
-        assertEquals("I don't understand the command.", response);
+        assertEquals("Следуй по командам", response);
 
     }
 }
