@@ -48,7 +48,7 @@ public class Logic {
                         /list_categories - список категорий
                         /delete_category - удаление категории
                         /edit_category - изменение категории
-                        /list_notes - список записей в категории
+                        /list - список записей в категории
                         /move - перемещение записи в категорию
                         """;
 
@@ -151,7 +151,8 @@ public class Logic {
         parsedCommand[1] = "";  // First argument
         parsedCommand[2] = "";  // Second argument
 
-        String pattern = "^/([a-zA-Z_]+)\\s*([a-zA-Z_\\s]*)\\s*(?:to\\s*([a-zA-Z_\\s]+))?$";
+        String pattern =
+                "^/([a-zA-Zа-яА-Я0-9_]+)\\s*([a-zA-Zа-яА-Я0-9_\\s]*)\\s*(?:to\\s*([a-zA-Zа-яА-Я0-9_\\s]+))?$";
         Pattern regex = Pattern.compile(pattern);
         Matcher matcher = regex.matcher(message);
 
