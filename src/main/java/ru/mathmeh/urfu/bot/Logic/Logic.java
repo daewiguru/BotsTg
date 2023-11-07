@@ -33,7 +33,7 @@ public class Logic {
         String firstArgument = parsedCommand[1];
         String secondArgument = parsedCommand[2];
 
-        switch (command) {
+        switch ("/" + command) {
             case "/start":
                 return "Привет! Я простой бот для записей. Вы можете создавать, управлять категориями и записями.\n" +
                         "Доступные команды: /help";
@@ -135,20 +135,6 @@ public class Logic {
                 } else {
                     return "Укажите имя категории для просмотра записей.";
                 }
-
-            /*case "/move":
-                if (!firstArgument.isEmpty() && !secondArgument.isEmpty()) {
-                    try {
-                        int id = Integer.parseInt(firstArgument);
-                        categories.moveNoteToCategory(id, secondArgument);
-                        return "Категория записи успешно изменена.";
-                    } catch (NumberFormatException e) {
-                        return "Неверный номер записи.";
-                    }
-                } else {
-                    return "Пожалуйста, укажите номер записи и новую категорию.";
-                }*/
-
             default:
                 return "Такой команды нет или она не верна. Для получения списка команд используйте /help.";
         }
