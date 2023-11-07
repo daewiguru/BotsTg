@@ -61,6 +61,7 @@ public class NoteManager {
     public void deleteNote(int id) {
         notes.remove(id);
     }
+    //TODO javadoc
     public String list() {
         StringBuilder result = new StringBuilder();
         for (Map.Entry<Integer, Note> entry : notes.entrySet()) {

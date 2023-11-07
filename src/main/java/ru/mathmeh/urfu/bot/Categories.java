@@ -4,6 +4,7 @@ package ru.mathmeh.urfu.bot;
 import ru.mathmeh.urfu.bot.Notes.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * The Categories class manages a collection of categories, each containing a list of notes.
@@ -96,4 +97,30 @@ public class Categories {
         }
         return table.toString();
     }
+    //TODO javadoc
+    public NoteManager getCategoryByName(String categoryName) {
+        return categories.get(categoryName);
+    }
+    public void moveNoteToCategory(int noteId, String fromCategory, String toCategory) {
+        NoteManager fromManager = categories.get(fromCategory);
+        NoteManager toManager = categories.get(toCategory);
+
+        if (fromManager != null && toManager != null) {
+            try {
+                Note note = fromManager.getNotes().stream()
+                        .filter(n -> n.getId() == noteId)
+                        .findFirst()
+                        .orElseThrow(() -> new NoSuchElementException
+                                ("Заметка с указанным ID не найдена в категории " + fromCategory));
+
+                fromManager.deleteNote(noteId);
+                toManager.addNote(note.getText());
+            } catch (IllegalArgumentException e) {
+                throw e; // Прокидываем IllegalArgumentException, если оно было выброшено
+            }
+        } else {
+            throw new IllegalArgumentException("Указанные категории не существуют.");
+        }
+    }
+
 }

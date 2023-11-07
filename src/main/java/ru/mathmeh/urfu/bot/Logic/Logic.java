@@ -1,9 +1,12 @@
 package ru.mathmeh.urfu.bot.Logic;
 
+import ru.mathmeh.urfu.bot.Categories;
 import ru.mathmeh.urfu.bot.Notes.Note;
 import ru.mathmeh.urfu.bot.Notes.NoteManager;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This class implements the bot logic
@@ -12,65 +15,80 @@ import java.util.List;
  */
 public class Logic {
     NoteManager noteManager;
+    Categories categories;
 
     public Logic(){
         noteManager = new NoteManager();
+        categories = new Categories();
     }
 
     /**
-     * This method realize cross-platform logic of bots
-     * @param message text of user`s message
-     * @return tet of bot message
+     * This method realizes cross-platform logic of the bot
+     * @param message text of user's message
+     * @return text of bot message
      */
-
     public String handleMessage(String message) {
-        String[] parts = message.split(" ");
-        String command = parts[0];
+        String[] parsedCommand = parseCommand(message);
+        String command = parsedCommand[0];
+        String firstArgument = parsedCommand[1];
+        String secondArgument = parsedCommand[2];
 
         switch (command) {
             case "/start":
-                return "Привет я простой бот для записей, можешь записывать в меня всё что угодно,\n" +
-                        "а еще удалять и редактировать записи. Ежедневник в твоем распоряжении.\n" +
-                        "/help";
+                return "Привет! Я простой бот для записей. Вы можете создавать, управлять категориями и записями.\n" +
+                        "Доступные команды: /help";
             case "/help":
                 return """
-                        /table - команда для вывода списка записей
+                        Доступные команды:
+                        /table - вывод списка записей
                         /add - добавление записи
                         /del - удаление записи (указывайте номер записи, можно посмотреть в списке)
-                        /edit - изменение записи (указывайте номер записи, можно посмотреть в списке)""";
+                        /edit - изменение записи (указывайте номер записи, можно посмотреть в списке)
+                        /create_category - создание категории
+                        /list_categories - список категорий
+                        /delete_category - удаление категории
+                        /edit_category - изменение категории
+                        /list_notes - список записей в категории
+                        /move - перемещение записи в категорию
+                        """;
 
             case "/table":
                 List<Note> notes = noteManager.getNotes();
-                StringBuilder response = new StringBuilder("Вот ваши записи:\n");
+                StringBuilder response = new StringBuilder("Ваши записи:\n");
                 for (Note note : notes) {
                     response.append(note.getId()).append(". ").append(note.getText()).append("\n");
                 }
                 return response.toString();
+
             case "/add":
-                if (parts.length >= 2) {
-                    String text = message.substring(command.length() + 1);
-                    noteManager.addNote(text);
-                    return "Запись добавлена^_^";
+                if (!firstArgument.isEmpty()) {
+                    noteManager.addNote(firstArgument);
+                    return "Запись добавлена!";
                 } else {
                     return "Пожалуйста, укажите запись.";
                 }
+
             case "/edit":
-                if (parts.length >= 2) {
+                if (!firstArgument.isEmpty()) {
                     try {
-                        int id = Integer.parseInt(parts[1]);
-                        String text = message.substring(command.length() + 2 + parts[1].length());
-                        noteManager.editNote(id, text);
-                        return "Запись изменена!";
+                        int id = Integer.parseInt(firstArgument);
+                        if (!secondArgument.isEmpty()) {
+                            noteManager.editNote(id, secondArgument);
+                            return "Запись изменена!";
+                        } else {
+                            return "Пожалуйста, укажите текст для изменения записи.";
+                        }
                     } catch (NumberFormatException e) {
-                        return "Неревный номер записи.";
+                        return "Неверный номер записи.";
                     }
                 } else {
-                    return "Пожалуйста введите номер записи и изменения";
+                    return "Пожалуйста, введите номер записи и изменения.";
                 }
+
             case "/del":
-                if (parts.length >= 2) {
+                if (!firstArgument.isEmpty()) {
                     try {
-                        int id = Integer.parseInt(parts[1]);
+                        int id = Integer.parseInt(firstArgument);
                         noteManager.deleteNote(id);
                         return "Запись удалена!";
                     } catch (NumberFormatException e) {
@@ -79,9 +97,84 @@ public class Logic {
                 } else {
                     return "Укажите номер записи для удаления.";
                 }
-            default:
-                return "Следуй по командам";
 
+            case "/create_category":
+                if (!firstArgument.isEmpty()) {
+                    categories.createCategory(firstArgument);
+                    return "Категория создана, вы можете добавлять в нее заметки.";
+                } else {
+                    return "Пожалуйста, укажите имя категории.";
+                }
+
+            case "/list_categories":
+                return categories.listCategories();
+
+            case "/delete_category":
+                if (!firstArgument.isEmpty()) {
+                    categories.deleteCategory(firstArgument);
+                    return "Категория \"" + firstArgument + "\" удалена.";
+                } else {
+                    return "Укажите имя категории для удаления.";
+                }
+
+            case "/edit_category":
+                if (!firstArgument.isEmpty() && !secondArgument.isEmpty()) {
+                    categories.editCategory(firstArgument, secondArgument);
+                    return "Название категории успешно изменено.";
+                } else {
+                    return "Пожалуйста, укажите старое и новое название категории.";
+                }
+
+            case "/list":
+                if (!firstArgument.isEmpty()) {
+                    StringBuilder notesList = new StringBuilder(firstArgument + ":\n");
+                    notesList
+                            .append(categories
+                                    .getCategoryByName(firstArgument).list());
+                    return notesList.toString();
+                } else {
+                    return "Укажите имя категории для просмотра записей.";
+                }
+
+            /*case "/move":
+                if (!firstArgument.isEmpty() && !secondArgument.isEmpty()) {
+                    try {
+                        int id = Integer.parseInt(firstArgument);
+                        categories.moveNoteToCategory(id, secondArgument);
+                        return "Категория записи успешно изменена.";
+                    } catch (NumberFormatException e) {
+                        return "Неверный номер записи.";
+                    }
+                } else {
+                    return "Пожалуйста, укажите номер записи и новую категорию.";
+                }*/
+
+            default:
+                return "Такой команды нет или она не верна. Для получения списка команд используйте /help.";
         }
+    }
+
+    /**
+     * Parses a command with arguments.
+     * @param message The user's message.
+     * @return An array with the command and its arguments.
+     */
+    private String[] parseCommand(String message) {
+        String[] parsedCommand = new String[3];
+        parsedCommand[0] = "";  // Command
+        parsedCommand[1] = "";  // First argument
+        parsedCommand[2] = "";  // Second argument
+
+        String pattern = "^/([a-zA-Z_]+)\\s*([a-zA-Z_\\s]*)\\s*(?:to\\s*([a-zA-Z_\\s]+))?$";
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(message);
+
+        if (matcher.find()) {
+            parsedCommand[0] = matcher.group(1);
+            parsedCommand[1] = matcher.group(2);
+            parsedCommand[2] = matcher.group(3);
+        }
+
+        return parsedCommand;
     }
 }
