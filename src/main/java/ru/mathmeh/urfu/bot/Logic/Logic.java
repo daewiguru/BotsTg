@@ -1,4 +1,7 @@
-package ru.mathmeh.urfu.bot;
+package ru.mathmeh.urfu.bot.Logic;
+
+import ru.mathmeh.urfu.bot.Notes.Note;
+import ru.mathmeh.urfu.bot.Notes.NoteManager;
 
 import java.util.List;
 

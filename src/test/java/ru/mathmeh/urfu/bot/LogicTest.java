@@ -2,6 +2,7 @@ package ru.mathmeh.urfu.bot;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.mathmeh.urfu.bot.Logic.Logic;
 
 import static org.junit.Assert.*;
 /**
