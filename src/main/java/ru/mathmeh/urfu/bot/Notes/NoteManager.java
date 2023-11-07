@@ -1,4 +1,6 @@
-package ru.mathmeh.urfu.bot;
+package ru.mathmeh.urfu.bot.Notes;
+
+import ru.mathmeh.urfu.bot.Notes.Note;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,4 +61,15 @@ public class NoteManager {
     public void deleteNote(int id) {
         notes.remove(id);
     }
+    //TODO javadoc
+    public String list() {
+        StringBuilder result = new StringBuilder();
+        for (Map.Entry<Integer, Note> entry : notes.entrySet()) {
+            int key = entry.getKey();
+            Note value = entry.getValue();
+            result.append(key).append(". ").append(value.getText()).append("\n");
+        }
+        return result.toString();
+    }
 }
+

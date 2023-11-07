@@ -1,4 +1,4 @@
-package ru.mathmeh.urfu.bot;
+package ru.mathmeh.urfu.bot.Logic;
 import java.io.FileInputStream;
 import java.util.Properties;
 
