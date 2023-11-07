@@ -110,4 +110,32 @@ public class LogicTest {
         assertEquals("Следуй по командам", response);
 
     }
+    @Test
+    public void testCreateCategoryCommand() {
+        String response = logic.handleMessage("/create_category NewCategory");
+        assertEquals("Категория создана, вы можете добавлять в нее заметки.", response);
+    }
+
+    @Test
+    public void testListCategoriesCommand() {
+        logic.handleMessage("/create_category Category1");
+        logic.handleMessage("/create_category Category2");
+        String response = logic.handleMessage("/list_categories");
+        assertTrue(response.contains("Category1"));
+        assertTrue(response.contains("Category2"));
+    }
+
+    @Test
+    public void testDeleteCategoryCommand() {
+        logic.handleMessage("/create_category CategoryToDelete");
+        String response = logic.handleMessage("/delete_category CategoryToDelete");
+        assertEquals("Категория \"CategoryToDelete\" удалена.", response);
+    }
+
+    @Test
+    public void testEditCategoryCommand() {
+        logic.handleMessage("/create_category OldCategoryName");
+        String response = logic.handleMessage("/edit_category OldCategoryName NewCategoryName");
+        assertEquals("Название категории успешно изменено.", response);
+    }
 }
