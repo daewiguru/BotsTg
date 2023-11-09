@@ -77,7 +77,7 @@ public class Logic {
                     return "Укажите номер записи для удаления.";
                 }
             default:
-                return "Следуй по командам";
+                return "Используй команды \n/help";
 
         }
     }

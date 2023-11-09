@@ -29,21 +29,21 @@ public class LogicTest {
     public void testTableCommand() {
         logic.handleMessage("/add Test Note");
         String response = logic.handleMessage("/table");
-
-        assertTrue(response.startsWith("Вот ваши записи:"));
-        assertTrue(response.contains("1. Test Note"));
+        assertEquals("Вот ваши записи:\n1. Test Note\n", response);
     }
     /**
      * This test executes the /add command with the text "Test Note" and verifies that the response
      * is "Note added!". It also checks that the added note is displayed correctly in the list of notes.
      */
+
     @Test
     public void testAddCommand() {
         String response = logic.handleMessage("/add Test Note");
         assertEquals("Запись добавлена^_^", response);
-        assertTrue(logic.handleMessage("/table").contains("1. Test Note"));
-
+        String tableResponse = logic.handleMessage("/table");
+        assertEquals("Вот ваши записи:\n1. Test Note\n", tableResponse);
     }
+
     /**
      * This test executes the /add command without specifying any text and checks that the response
      * is "Please provide a text for the note.". It also ensures that no notes are added to the list.
@@ -52,7 +52,8 @@ public class LogicTest {
     public void testAddCommandWithoutText() {
         String response = logic.handleMessage("/add");
         assertEquals("Пожалуйста, укажите запись.", response);
-        assertTrue(logic.handleMessage("/table").contains(" "));
+        String table = logic.handleMessage("/table");
+        assertEquals("Вот ваши записи:\n", table);
     }
 
     /**
@@ -86,7 +87,8 @@ public class LogicTest {
         logic.handleMessage("/add Test Note");
         String response = logic.handleMessage("/del 1");
         assertEquals("Запись удалена!", response);
-        assertTrue(logic.handleMessage("/table").contains(" "));
+        String table = logic.handleMessage("/table");
+        assertEquals("Вот ваши записи:\n", table);
     }
     /**
      * This test executes the /del command with a non-integer ID and checks that the response is
@@ -98,7 +100,6 @@ public class LogicTest {
         String response = logic.handleMessage("/del not_an_integer");
         assertEquals("Неверный номер записи.", response);
         assertTrue(logic.handleMessage("/table").contains("1. Test Note"));
-
     }
     /**
      * Tests any unknown command. Checks if the Logic object returns the correct message when an unrecognized command is received.
@@ -106,7 +107,6 @@ public class LogicTest {
     @Test
     public void testUnknownCommand() {
         String response = logic.handleMessage("/unknown");
-        assertEquals("Следуй по командам", response);
-
+        assertEquals("Используй команды \n/help", response);
     }
 }
