@@ -2,9 +2,8 @@ package ru.mathmeh.urfu.bot;
 
 
 import ru.mathmeh.urfu.bot.Notes.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+
+import java.util.*;
 
 /**
  * The Categories class manages a collection of categories, each containing a list of notes.
@@ -13,7 +12,7 @@ public class Categories {
     /**
      * A HashMap where keys are category names and values are NoteManagers.
      */
-    private final Map<String, NoteManager> categories;
+    private static Map<String, NoteManager> categories;
 
     /**
      * Constructor method for Categories.
@@ -42,20 +41,24 @@ public class Categories {
      */
     public void editCategory(String oldCategoryName, String newCategoryName) {
         if (categories.containsKey(oldCategoryName)) {
-            NoteManager temp = categories.get(oldCategoryName);
-            categories.remove(oldCategoryName);
-            categories.put(newCategoryName, temp);
-        } else {
-            throw new IllegalArgumentException
-                    ("Старая категория - " + oldCategoryName + ", не найдена.");
+            NoteManager notes = categories.remove(oldCategoryName);
+            categories.put(newCategoryName, notes);
         }
     }
 
-    /**
-     * Lists all available categories.
-     * @return A list of category names.
-     */
-    public String listCategories() {
+    public void deleteCategory(String categoryName) {
+        categories.remove(categoryName);
+    }
+    public void addNoteToCategory(String noteText, String categoryName) {
+        if (categories.containsKey(categoryName)) {
+            NoteManager noteManager = categories.get(categoryName);
+            noteManager.addNote(noteText);
+        } else {
+            throw new IllegalArgumentException("Категория " + categoryName + " не существует.");
+        }
+    }
+
+    public static String listCategories() {
         StringBuilder result = new StringBuilder();
         int index = 1;
         for (String category : categories.keySet()) {
@@ -64,63 +67,19 @@ public class Categories {
         }
         return result.toString();
     }
+    public List<String> getNotesInCategory(String categoryName) {
+        if (categories.containsKey(categoryName)) {
+            NoteManager noteManager = categories.get(categoryName);
+            List<Note> notes = noteManager.getNotes();
+            List<String> noteTexts = new ArrayList<>();
 
-    /**
-     * Deletes an empty category.
-     * @param deletingCategory The name of the category to be deleted.
-     */
-    public void deleteCategory(String deletingCategory) {
-        if (categories.containsKey(deletingCategory) &&
-                categories.get(deletingCategory).getNotes().isEmpty()) {
-            categories.remove(deletingCategory);
-        } else {
-            throw new IllegalArgumentException
-                    ("Категория " + deletingCategory + " не найдена или не пуста.");
-        }
-    }
-
-    /**
-     * Displays a table of all categories and their notes.
-     * @return A formatted table of categories and notes.
-     */
-    public String table() {
-        StringBuilder table = new StringBuilder();
-        for (Map.Entry<String, NoteManager> entry : categories.entrySet()) {
-            String categoryName = entry.getKey();
-            NoteManager noteManager = entry.getValue();
-            table
-                    .append(categoryName)
-                    .append(":\n")
-                    .append("\t")
-                    .append(noteManager.list());
-
-        }
-        return table.toString();
-    }
-    //TODO javadoc
-    public NoteManager getCategoryByName(String categoryName) {
-        return categories.get(categoryName);
-    }
-    public void moveNoteToCategory(int noteId, String fromCategory, String toCategory) {
-        NoteManager fromManager = categories.get(fromCategory);
-        NoteManager toManager = categories.get(toCategory);
-
-        if (fromManager != null && toManager != null) {
-            try {
-                Note note = fromManager.getNotes().stream()
-                        .filter(n -> n.getId() == noteId)
-                        .findFirst()
-                        .orElseThrow(() -> new NoSuchElementException
-                                ("Заметка с указанным ID не найдена в категории " + fromCategory));
-
-                fromManager.deleteNote(noteId);
-                toManager.addNote(note.getText());
-            } catch (IllegalArgumentException e) {
-                throw e; // Прокидываем IllegalArgumentException, если оно было выброшено
+            for (Note note : notes) {
+                noteTexts.add(note.getText());
             }
+
+            return noteTexts;
         } else {
-            throw new IllegalArgumentException("Указанные категории не существуют.");
+            return Collections.emptyList(); // Возвращаем пустой список, если категория не найдена
         }
     }
-
 }

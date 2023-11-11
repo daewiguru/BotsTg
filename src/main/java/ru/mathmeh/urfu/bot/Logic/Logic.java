@@ -4,9 +4,8 @@ import ru.mathmeh.urfu.bot.Categories;
 import ru.mathmeh.urfu.bot.Notes.Note;
 import ru.mathmeh.urfu.bot.Notes.NoteManager;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * This class implements the bot logic
@@ -40,7 +39,6 @@ public class Logic {
             case "/help":
                 return """
                         Доступные команды:
-                        /table - вывод списка записей
                         /add - добавление записи
                         /del - удаление записи (указывайте номер записи, можно посмотреть в списке)
                         /edit - изменение записи (указывайте номер записи, можно посмотреть в списке)
@@ -48,8 +46,7 @@ public class Logic {
                         /list_categories - список категорий
                         /delete_category - удаление категории
                         /edit_category - изменение категории
-                        /list - список записей в категории
-                        /move - перемещение записи в категорию
+                        /list_notes - вывод категории и её содержания
                         """;
 
             case "/table":
@@ -62,7 +59,7 @@ public class Logic {
 
             case "/add":
                 if (!firstArgument.isEmpty()) {
-                    noteManager.addNote(firstArgument);
+                    categories.addNoteToCategory(firstArgument,secondArgument);
                     return "Запись добавлена!";
                 } else {
                     return "Пожалуйста, укажите запись.";
@@ -107,7 +104,7 @@ public class Logic {
                 }
 
             case "/list_categories":
-                return categories.listCategories();
+                return Categories.listCategories();
 
             case "/delete_category":
                 if (!firstArgument.isEmpty()) {
@@ -124,17 +121,21 @@ public class Logic {
                 } else {
                     return "Пожалуйста, укажите старое и новое название категории.";
                 }
-
-            case "/list":
+            case "/list_notes":
                 if (!firstArgument.isEmpty()) {
-                    StringBuilder notesList = new StringBuilder(firstArgument + ":\n");
-                    notesList
-                            .append(categories
-                                    .getCategoryByName(firstArgument).list());
-                    return notesList.toString();
+                    String categoryName = firstArgument;
+                    List<String> notesInCategory = categories.getNotesInCategory(categoryName);
+                    response = new StringBuilder("Записи в категории \"" + categoryName + "\":\n");
+
+                    for (String note : notesInCategory) {
+                        response.append("- ").append(note).append("\n");
+                    }
+
+                    return response.toString();
                 } else {
-                    return "Укажите имя категории для просмотра записей.";
+                    return "Пожалуйста, укажите название категории для просмотра записей.";
                 }
+
             default:
                 return "Такой команды нет или она не верна. Для получения списка команд используйте /help.";
         }
@@ -146,22 +147,29 @@ public class Logic {
      * @return An array with the command and its arguments.
      */
     private String[] parseCommand(String message) {
+        String[] words = message.trim().split("\\s+");
+
         String[] parsedCommand = new String[3];
         parsedCommand[0] = "";  // Command
         parsedCommand[1] = "";  // First argument
         parsedCommand[2] = "";  // Second argument
 
-        String pattern =
-                "^/([a-zA-Zа-яА-Я0-9_]+)\\s*([a-zA-Zа-яА-Я0-9_\\s]*)\\s*(?:to\\s*([a-zA-Zа-яА-Я0-9_\\s]+))?$";
-        Pattern regex = Pattern.compile(pattern);
-        Matcher matcher = regex.matcher(message);
+        if (words.length > 0) {
+            parsedCommand[0] = words[0].substring(1);  // Убираем "/"
+        }
 
-        if (matcher.find()) {
-            parsedCommand[0] = matcher.group(1);
-            parsedCommand[1] = matcher.group(2);
-            parsedCommand[2] = matcher.group(3);
+        if (words.length > 1) {
+            parsedCommand[1] = words[1];
+        }
+
+        if (words.length > 2 && words[2].equalsIgnoreCase("to")) {
+            // Если есть "to", и следующее слово не равно "to"
+            if (words.length > 3) {
+                parsedCommand[2] = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
+            }
         }
 
         return parsedCommand;
     }
+
 }
