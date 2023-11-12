@@ -45,10 +45,19 @@ public class Categories {
         }
     }
 
+    /**
+     * This is a method for deleting a category
+     * @param categoryName Is a name of deleting category
+     */
     public void deleteCategory(String categoryName) {
         categories.remove(categoryName);
     }
 
+    /**
+     * This is a method for adding note to the category
+     * @param noteText Text of adding note
+     * @param categoryName Name of category, where note are added
+     */
     public void addNoteToCategory(String noteText, String categoryName) {
         if (categories.containsKey(categoryName)) {
             NoteManager noteManager = categories.get(categoryName);
@@ -58,6 +67,10 @@ public class Categories {
         }
     }
 
+    /**
+     * This is a method for listing all categories
+     * @return A formatted string of all categories
+     */
     public String listCategories() {
         StringBuilder result = new StringBuilder();
         int index = 1;
@@ -68,6 +81,11 @@ public class Categories {
         return result.toString();
     }
 
+    /**
+     * This method shows all notes in category
+     * @param categoryName Is a name of category that notes are showed
+     * @return A list of notes of 1 category or empty list
+     */
     public List<String> getNotesInCategory(String categoryName) {
         if (categories.containsKey(categoryName)) {
             NoteManager noteManager = categories.get(categoryName);
@@ -80,7 +98,7 @@ public class Categories {
 
             return noteTexts;
         } else {
-            return Collections.emptyList(); // Возвращаем пустой список, если категория не найдена
+            return Collections.emptyList();
         }
     }
 }
