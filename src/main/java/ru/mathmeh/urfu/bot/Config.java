@@ -8,7 +8,7 @@ import java.util.Properties;
  */
 
 public class Config {
-    public static final String CONFIGURATION_BOT_FILE = "config/config.properties";
+    public final String CONFIGURATION_BOT_FILE = "config/config.properties";
     //TODO create a database, and link it with bot
     //public static final String CONFIGURATION_DB_FILE = " ";
     /**
