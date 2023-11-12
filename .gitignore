@@ -3,3 +3,16 @@
 .config/
 .target/
 
+/.idea/.gitignore
+/target/classes/ru/mathmeh/urfu/bot/Bot.class
+/target/classes/ru/mathmeh/urfu/bot/Categories.class
+/target/classes/ru/mathmeh/urfu/bot/Logic/Config.class
+/config/config.properties
+/src/main/java/ru/mathmeh/urfu/bot/ConfigVk.java
+/target/classes/ru/mathmeh/urfu/bot/Logic/Logic.class
+/target/test-classes/ru/mathmeh/urfu/bot/LogicTest.class
+/target/classes/ru/mathmeh/urfu/Main.class
+/target/classes/ru/mathmeh/urfu/bot/Notes/Note.class
+/target/classes/ru/mathmeh/urfu/bot/Notes/NoteManager.class
+/target/classes/ru/mathmeh/urfu/bot/TelegramBot.class
+/src/main/java/ru/mathmeh/urfu/bot/VkBot.java
