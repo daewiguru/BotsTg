@@ -1,6 +1,5 @@
 package ru.mathmeh.urfu.bot;
 
-
 import ru.mathmeh.urfu.bot.Notes.*;
 
 import java.util.*;
@@ -12,7 +11,7 @@ public class Categories {
     /**
      * A HashMap where keys are category names and values are NoteManagers.
      */
-    private static Map<String, NoteManager> categories;
+    private final Map<String, NoteManager> categories;
 
     /**
      * Constructor method for Categories.
@@ -49,6 +48,7 @@ public class Categories {
     public void deleteCategory(String categoryName) {
         categories.remove(categoryName);
     }
+
     public void addNoteToCategory(String noteText, String categoryName) {
         if (categories.containsKey(categoryName)) {
             NoteManager noteManager = categories.get(categoryName);
@@ -58,7 +58,7 @@ public class Categories {
         }
     }
 
-    public static String listCategories() {
+    public String listCategories() {
         StringBuilder result = new StringBuilder();
         int index = 1;
         for (String category : categories.keySet()) {
@@ -67,6 +67,7 @@ public class Categories {
         }
         return result.toString();
     }
+
     public List<String> getNotesInCategory(String categoryName) {
         if (categories.containsKey(categoryName)) {
             NoteManager noteManager = categories.get(categoryName);

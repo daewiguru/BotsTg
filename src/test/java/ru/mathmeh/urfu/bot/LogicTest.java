@@ -27,40 +27,67 @@ public class LogicTest {
     public void testCreateCategoryCommand() {
         logic.handleMessage("/create_category тест");
         String response = logic.handleMessage("/list_categories");
-        assertEquals("1.тест", response);
+        String expected = "1. тест";
+        System.out.println("Вывод теста создания категории:");
+        System.out.println("Expected: " + expected);
+        System.out.println("Actual: " + response);
 
+        assertEquals(expected.trim(), response.trim());
     }
+
+
     /**
      * Tests the logic of the "/edit_category" command. It creates a category, edits its name, and then checks if the edited name appears in the list of categories.
      */
 
     @Test
-    public void testeditCategoryCommand(){
+    public void testeditCategoryCommand() {
         logic.handleMessage("/create_category тест");
         logic.handleMessage("/edit_category тест to тест1");
         String response = logic.handleMessage("/list_categories");
-        assertEquals("1. тест1", response);
+        String expected = "1. тест1";
+        System.out.println("Вывод теста изменения категории:");
+        System.out.println("Expected: " + expected);
+        System.out.println("Actual: " + response);
+        assertEquals(expected.trim(), response.trim());
+
     }
+
     /**
      * Tests the logic of the "/delete_category" command. It creates two categories, deletes one, and then checks if the remaining category appears in the list of categories.
      */
     @Test
-    public void testdeleteCategoryCommand(){
+    public void testdeleteCategoryCommand() {
         logic.handleMessage("/create_category тест1");
         logic.handleMessage("/create_category тест2");
-        String responce = logic.handleMessage("/delete_category тест1");
-        assertEquals("1. тест2", responce);
+        logic.handleMessage("/delete_category тест1");
+        String listCategoriesResponse = logic.handleMessage("/list_categories");
+        String expected = "1. тест2";
+        System.out.println("Вывод теста удаленя категории:");
+        System.out.println("Expected: " + expected);
+        System.out.println("Actual: " +listCategoriesResponse );
+
+        assertEquals(expected.trim(), listCategoriesResponse.trim());
     }
+
     /**
      * Tests the logic of the "/add" command. It creates a category, adds a note to it, and then checks if the added note appears in the list of notes for that category.
      */
     @Test
-    public void testaddtoCategoryCommand(){
+    public void testaddtoCategoryCommand() {
         logic.handleMessage("/create_category тест");
         logic.handleMessage("/add тест1 to тест");
-        String responce = logic.handleMessage("/list_notes тест");
-        assertEquals("Записи в категории \"тест\":\n" +
-                "- тест1", responce);
+        String response = logic.handleMessage("/list_notes тест");
+        System.out.println("Вывод теста добавлнения записии в категорию:");
+        String expected = "Записи в категории \"тест\":" + System.lineSeparator() + "- тест1";
+        // Вывод результата в консоль
+        System.out.println("Expected:\n " + "Записи в категории \"тест\":" + System.lineSeparator() + expected);
+        System.out.println("Actual:\n " + response);
+
+
+        assertEquals(expected.trim(), response.trim());
     }
+
+
 
 }

@@ -39,23 +39,13 @@ public class Logic {
             case "/help":
                 return """
                         Доступные команды:
-                        /add - добавление записи
-                        /del - удаление записи (указывайте номер записи, можно посмотреть в списке)
-                        /edit - изменение записи (указывайте номер записи, можно посмотреть в списке)
-                        /create_category - создание категории
-                        /list_categories - список категорий
-                        /delete_category - удаление категории
-                        /edit_category - изменение категории
-                        /list_notes - вывод категории и её содержания
+                        /add - добавление записи 📩
+                        /create_category - создание категории 📁
+                        /list_categories - список категорий 🗂
+                        /delete_category - удаление категории ❌
+                        /edit_category - изменение категории ✏️
+                        /list_notes - вывод категории и её содержания 📚
                         """;
-
-            case "/table":
-                List<Note> notes = noteManager.getNotes();
-                StringBuilder response = new StringBuilder("Ваши записи:\n");
-                for (Note note : notes) {
-                    response.append(note.getId()).append(". ").append(note.getText()).append("\n");
-                }
-                return response.toString();
 
             case "/add":
                 if (!firstArgument.isEmpty()) {
@@ -63,36 +53,6 @@ public class Logic {
                     return "Запись добавлена!";
                 } else {
                     return "Пожалуйста, укажите запись.";
-                }
-
-            case "/edit":
-                if (!firstArgument.isEmpty()) {
-                    try {
-                        int id = Integer.parseInt(firstArgument);
-                        if (!secondArgument.isEmpty()) {
-                            noteManager.editNote(id, secondArgument);
-                            return "Запись изменена!";
-                        } else {
-                            return "Пожалуйста, укажите текст для изменения записи.";
-                        }
-                    } catch (NumberFormatException e) {
-                        return "Неверный номер записи.";
-                    }
-                } else {
-                    return "Пожалуйста, введите номер записи и изменения.";
-                }
-
-            case "/del":
-                if (!firstArgument.isEmpty()) {
-                    try {
-                        int id = Integer.parseInt(firstArgument);
-                        noteManager.deleteNote(id);
-                        return "Запись удалена!";
-                    } catch (NumberFormatException e) {
-                        return "Неверный номер записи.";
-                    }
-                } else {
-                    return "Укажите номер записи для удаления.";
                 }
 
             case "/create_category":
@@ -104,7 +64,7 @@ public class Logic {
                 }
 
             case "/list_categories":
-                return Categories.listCategories();
+                return categories.listCategories();
 
             case "/delete_category":
                 if (!firstArgument.isEmpty()) {
@@ -125,7 +85,7 @@ public class Logic {
                 if (!firstArgument.isEmpty()) {
                     String categoryName = firstArgument;
                     List<String> notesInCategory = categories.getNotesInCategory(categoryName);
-                    response = new StringBuilder("Записи в категории \"" + categoryName + "\":\n");
+                    StringBuilder response = new StringBuilder("Записи в категории \"" + categoryName + "\":\n");
 
                     for (String note : notesInCategory) {
                         response.append("- ").append(note).append("\n");
@@ -168,7 +128,6 @@ public class Logic {
                 parsedCommand[2] = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
             }
         }
-
         return parsedCommand;
     }
 
