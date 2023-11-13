@@ -22,7 +22,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
         logic = new Logic();
     }
 
-    Config config = new Config();
+    private final Config config = new Config();
 
     /**
      * This method gives us bot name which is read from config
@@ -30,7 +30,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
      */
     @Override
     public String getBotUsername() {
-        return config.botName;
+        return config.getBotName();
     }
   
     /**
@@ -40,7 +40,7 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot{
 
     @Override
     public String getBotToken() {
-        return config.botToken;
+        return config.getBotToken();
     }
 
 
