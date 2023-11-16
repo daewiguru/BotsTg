@@ -79,13 +79,17 @@ public class LogicTest {
         logic.handleMessage("/add тест1 to тест");
         String response = logic.handleMessage("/list_notes тест");
         System.out.println("Вывод теста добавлнения записии в категорию:");
-        String expected = "Записи в категории \"тест\":" + System.lineSeparator() + "- тест1";
+        String expected = "Записи в категории \"тест\":\n" + "- тест1\n";
         // Вывод результата в консоль
-        System.out.println("Expected:\n " + "Записи в категории \"тест\":" + System.lineSeparator() + expected);
+        System.out.println("Expected:\n "  + expected);
         System.out.println("Actual:\n " + response);
+        System.out.println("Expected length: " + expected.length());
+        System.out.println("Actual length: " + response.length());
+        System.out.println("Expected:\n" + expected);
+        System.out.println("Actual:\n" + response);
 
 
-        assertEquals(expected.trim(), response.trim());
+        assertEquals(expected, response);
     }
 
 
