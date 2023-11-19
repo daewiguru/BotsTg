@@ -28,8 +28,8 @@ public class Categories {
         if (!categories.containsKey(categoryName)) {
             categories.put(categoryName, new NoteManager());
         } else {
-            throw new IllegalArgumentException
-                    ("Категория " + categoryName + " уже существует.");
+            throw new IllegalArgumentException(
+                    "Категория " + categoryName + " уже существует.");
         }
     }
 
@@ -63,7 +63,8 @@ public class Categories {
             NoteManager noteManager = categories.get(categoryName);
             noteManager.addNote(noteText);
         } else {
-            throw new IllegalArgumentException("Категория " + categoryName + " не существует.");
+            throw new IllegalArgumentException(
+                    "Категория " + categoryName + " не существует.");
         }
     }
 

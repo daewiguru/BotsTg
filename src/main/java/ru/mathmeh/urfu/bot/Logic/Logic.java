@@ -1,7 +1,6 @@
 package ru.mathmeh.urfu.bot.Logic;
 
 import ru.mathmeh.urfu.bot.Categories;
-import ru.mathmeh.urfu.bot.Notes.Note;
 import ru.mathmeh.urfu.bot.Notes.NoteManager;
 
 import java.util.Arrays;
@@ -13,8 +12,8 @@ import java.util.List;
  * @version 1.0
  */
 public class Logic {
-    NoteManager noteManager;
-    Categories categories;
+    private final NoteManager noteManager;
+    private final Categories categories;
 
     public Logic(){
         noteManager = new NoteManager();
@@ -115,7 +114,7 @@ public class Logic {
         parsedCommand[2] = "";  // Second argument
 
         if (words.length > 0) {
-            parsedCommand[0] = words[0].substring(1);  // Убираем "/"
+            parsedCommand[0] = words[0].replace("/", "");  // Убираем "/"
         }
 
         if (words.length > 1) {
