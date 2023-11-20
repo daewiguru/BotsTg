@@ -73,13 +73,9 @@ public class Categories {
      * @return A formatted string of all categories
      */
     public String listCategories() {
-        StringBuilder result = new StringBuilder();
-        int index = 1;
-        for (String category : categories.keySet()) {
-            result.append(index).append(". ").append(category).append("\n");
-            index++;
-        }
-        return result.toString();
+        Printer printer = new Printer();
+        List<String> categoryList = new ArrayList<>(categories.keySet());
+        return printer.makeString(categoryList, true);
     }
 
     /**

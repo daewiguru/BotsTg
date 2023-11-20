@@ -68,6 +68,8 @@ public class LogicTest {
         logic.handleMessage("/add тест1 to тест");
         String response = logic.handleMessage("/list_notes тест");
         String expected = "Записи в категории \"тест\":\n" + "- тест1\n";
+        System.out.print(response + '\n');
+        System.out.print(expected + '\n');
         assertEquals(expected, response);
     }
 

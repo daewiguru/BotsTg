@@ -2,7 +2,9 @@ package ru.mathmeh.urfu.bot.Logic;
 
 import ru.mathmeh.urfu.bot.Categories;
 import ru.mathmeh.urfu.bot.Notes.NoteManager;
+import ru.mathmeh.urfu.bot.Printer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,12 +14,14 @@ import java.util.List;
  * @version 1.0
  */
 public class Logic {
-    private final NoteManager noteManager;
+    //private final NoteManager noteManager;
     private final Categories categories;
+    private final Printer printer;
 
     public Logic(){
-        noteManager = new NoteManager();
+        //noteManager = new NoteManager();
         categories = new Categories();
+        printer = new Printer();
     }
 
     /**
@@ -85,12 +89,13 @@ public class Logic {
                     String categoryName = firstArgument;
                     List<String> notesInCategory = categories.getNotesInCategory(categoryName);
                     StringBuilder response = new StringBuilder("Записи в категории \"" + categoryName + "\":\n");
+                    List<String> formattedNotes = new ArrayList<>();
 
                     for (String note : notesInCategory) {
-                        response.append("- ").append(note).append("\n");
+                        formattedNotes.add("- " + note);
                     }
 
-                    return response.toString();
+                    return response + printer.makeString(formattedNotes, false);
                 } else {
                     return "Пожалуйста, укажите название категории для просмотра записей.";
                 }
