@@ -41,8 +41,8 @@ public class LogicTest {
         logic.handleMessage("/create_category тест");
         logic.handleMessage("/edit_category тест to тест1");
         String response = logic.handleMessage("/list_categories");
-        String expected = "1. тест1";
-        assertEquals(expected.trim(), response.trim());
+        String expected = "1. тест1\n";
+        assertEquals(expected, response);
 
     }
 
@@ -55,8 +55,8 @@ public class LogicTest {
         logic.handleMessage("/create_category тест2");
         logic.handleMessage("/delete_category тест1");
         String listCategoriesResponse = logic.handleMessage("/list_categories");
-        String expected = "1. тест2";
-        assertEquals(expected.trim(), listCategoriesResponse.trim());
+        String expected = "1. тест2\n";
+        assertEquals(expected, listCategoriesResponse);
     }
 
     /**
@@ -67,7 +67,10 @@ public class LogicTest {
         logic.handleMessage("/create_category тест");
         logic.handleMessage("/add тест1 to тест");
         String response = logic.handleMessage("/list_notes тест");
-        String expected = "Записи в категории \"тест\":\n" + "- тест1\n";
+        String expected = """
+                Записи в категории "тест":
+                - тест1
+                """;
         System.out.print(response + '\n');
         System.out.print(expected + '\n');
         assertEquals(expected, response);
