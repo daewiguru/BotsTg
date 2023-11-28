@@ -148,7 +148,24 @@ public class LogicTest {
     }
 
     /**
-     * Tests the logic of the "/add" command. It creates a category, adds a note to it, and then checks if the added note appears in the list of notes for that category.
+     *We look at the filling of the category, so the addition has been checked; all that remains is to
+     *check the contents of the category; in this test we will not check the addition,
+     *but will check the emptiness
+     */
+    @Test
+    public void testListNotes(){
+        logic.handleMessage("/create_category тест");
+        String categoryResponse = logic.handleMessage("/list_notes тест");
+        String expected = """
+                Записи в категории \"тест\":\n""";
+        assertEquals(expected,categoryResponse);
+    }
+
+    /**
+     * Tests the logic of the "/add" command. It creates a category, adds a note to it,
+     * and then checks if the added note appears in the list of notes for that category.
+     * We also check the completion of entries in the category,
+     * this is an additional check "list_notes"
      */
     @Test
     public void testAddToCategoryCommand() {
