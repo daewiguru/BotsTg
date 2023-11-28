@@ -21,6 +21,7 @@ public class Config {
     /**
      * Constant fields of the class are strings that contain data from the config and are used to run the bot
      */
+    private String vkToken;
     private String botName;
     private String botToken;
 
@@ -29,6 +30,9 @@ public class Config {
     }
     public String getBotToken() {
         return botToken;
+    }
+    public String getVkToken(){
+        return vkToken;
     }
 
     //TODO: link database to bot
@@ -50,6 +54,7 @@ public class Config {
         } catch (Exception e){
             System.out.print("Config was not load");
         }
+        vkToken = botSettings.getProperty("VkToken", " ");
         botName = botSettings.getProperty("BotName", " ");// TODO fill form
         botToken = botSettings.getProperty("BotToken", " ");
     }
