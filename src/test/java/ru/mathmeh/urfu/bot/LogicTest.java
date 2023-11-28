@@ -185,6 +185,7 @@ public class LogicTest {
     @Test
     public void testUnknownCommand() {
         String response = logic.handleMessage("/unknown");
+
         assertEquals("Такой команды нет или она не верна. Для получения списка команд используйте /help.", response);
     }
 }
