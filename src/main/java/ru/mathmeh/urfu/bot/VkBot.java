@@ -9,12 +9,21 @@ import ru.mathmeh.urfu.bot.Logic.Logic;
 
 public class VkBot extends LongPollBot {
     private final Config config = new Config();
+    /**
+     * Hidden logic
+     */
     private final Logic logic;
-
+    /**
+     * Constructor of Telegram Bot class
+     */
     public VkBot() {
         this.logic = new Logic();
     }
-
+    /**
+     * Handler for new messages.
+     *
+     * @param messageNew Object containing information about the new message.
+     */
     @Override
     public void onMessageNew(MessageNew messageNew) {
         try {
@@ -30,7 +39,10 @@ public class VkBot extends LongPollBot {
             e.printStackTrace();
         }
     }
-
+    /**
+     * This method gives us bot token which is read from config
+     * @return bot token
+     */
     @Override
     public String getAccessToken() {
         return config.getVkToken();
