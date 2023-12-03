@@ -1,5 +1,6 @@
 package ru.mathmeh.urfu.bot.Logic;
 
+import ru.mathmeh.urfu.bot.WeatherAPI;
 import ru.mathmeh.urfu.bot.Categories;
 import ru.mathmeh.urfu.bot.Notes.Note;
 import ru.mathmeh.urfu.bot.Notes.NoteManager;
@@ -15,16 +16,23 @@ import java.util.List;
  * @version 1.0
  */
 public class Logic {
+    private final WeatherAPI weatherAPI;
     private final NoteManager noteManager;
     private final Categories categories;
     private final Printer printer;
+    private final String weatherApiKey = "3e9b7ffa623b267ec9b8fbdcc94edf1d";
 
     public Logic(){
         noteManager = new NoteManager();
         categories = new Categories();
         printer = new Printer();
+        weatherAPI = new WeatherAPI(weatherApiKey);
     }
+    private String getWeather(String city) {
+        WeatherAPI weatherAPI = new WeatherAPI("3e9b7ffa623b267ec9b8fbdcc94edf1d"); // Замените на свой API-ключ
 
+        return weatherAPI.getWeather(city);
+    }
     /**
      * This method realizes cross-platform logic of the bot
      * @param message text of user's message
@@ -54,6 +62,13 @@ public class Logic {
                         /edit_category - изменение категории ✏️
                         /list_notes - вывод категории и её содержания 📚
                         """;
+            case "weather":
+                if (parsedCommand.length > 1) {
+                    String city = parsedCommand[1];
+                    return getWeather(city);
+                } else {
+                    return "Пожалуйста, укажите город для просмотра погоды.";
+                }
             case "add":
                 if (pars.length >= 2) {
                     String text = message.substring(command.length() + 1);
