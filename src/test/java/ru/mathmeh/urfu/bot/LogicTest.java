@@ -188,4 +188,51 @@ public class LogicTest {
 
         assertEquals("Такой команды нет или она не верна. Для получения списка команд используйте /help.", response);
     }
+    /**
+     * Tests the logic of the "/time_category" command. It creates a category and sets a reminder for it,
+     * then checks if the response indicates that the reminder is set.
+     */
+    @Test
+    public void testTimeCategoryCommand() {
+        logic.handleMessage("/create_category тест");
+        String response = logic.handleMessage("/time_category тест 11.11.2023");
+        assertEquals("Напоминание установлено на 12:00", response);
+    }
+
+    /**
+     * Tests the logic of the "/time_note" command. It creates a category, adds a note to it,
+     * and sets a reminder for the note. Then checks if the response indicates that the reminder is set.
+     */
+    @Test
+    public void testTimeNoteCommand() {
+        logic.handleMessage("/create_category тест");
+        logic.handleMessage("/added тест1 to тест");
+        String response = logic.handleMessage("/time_note тест тест1 11.12.2023");
+        assertEquals("Напоминание установлено на 12:00", response);
+    }
+
+    /**
+     * Tests the logic of the "/delete_time_category" command. It creates a category, sets a reminder for it,
+     * deletes the reminder, and then checks if the response indicates that the reminder is removed.
+     */
+    @Test
+    public void testDeleteTimeCategoryCommand() {
+        logic.handleMessage("/create_category тест");
+        logic.handleMessage("/time_category тест 11.11.2023");
+        String response = logic.handleMessage("/delete_time_category тест");
+        assertEquals("Напоминание убрано", response);
+    }
+
+    /**
+     * Tests the logic of the "/delete_time_note" command. It creates a category, adds a note to it,
+     * sets a reminder for the note, deletes the reminder, and then checks if the response indicates that the reminder is removed.
+     */
+    @Test
+    public void testDeleteTimeNoteCommand() {
+        logic.handleMessage("/create_category тест");
+        logic.handleMessage("/added тест1 to тест");
+        logic.handleMessage("/time_note тест тест1 11.12.2023");
+        String response = logic.handleMessage("/delete_time_note тест тест1");
+        assertEquals("Напоминание убрано", response);
+    }
 }

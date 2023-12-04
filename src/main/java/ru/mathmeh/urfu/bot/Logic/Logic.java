@@ -4,10 +4,17 @@ import ru.mathmeh.urfu.bot.Categories;
 import ru.mathmeh.urfu.bot.Notes.Note;
 import ru.mathmeh.urfu.bot.Notes.NoteManager;
 import ru.mathmeh.urfu.bot.Printer;
+import ru.mathmeh.urfu.bot.Reminder;
+import ru.mathmeh.urfu.bot.TelegramBot;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
 
 /**
  * This class implements the bot logic
@@ -18,13 +25,37 @@ public class Logic {
     private final NoteManager noteManager;
     private final Categories categories;
     private final Printer printer;
+    private final Reminder reminder;
+    private final ScheduledExecutorService executorService;
 
-    public Logic(){
+    public Logic() {
         noteManager = new NoteManager();
         categories = new Categories();
         printer = new Printer();
+        reminder = new Reminder();
+        executorService = Executors.newScheduledThreadPool(1);
+        initReminderScheduler();
     }
 
+    private void initReminderScheduler() {
+        executorService.scheduleAtFixedRate(() -> {
+            Map<String, List<String>> reminders = reminder.getReminders();
+
+            for (Map.Entry<String, List<String>> entry : reminders.entrySet()) {
+                String chatId = entry.getKey();
+                List<String> messages = entry.getValue();
+
+                for (String message : messages) {
+                    sendReminder(chatId, message);
+                }
+            }
+        }, 0, 1, TimeUnit.MINUTES);
+    }
+
+    private void sendReminder(String chatId, String message) {
+        // Метод для отправки напоминания в чат с использованием TelegramBot
+        TelegramBot.getInstance().sendMessage(Long.parseLong(chatId), message);
+    }
     /**
      * This method realizes cross-platform logic of the bot
      * @param message text of user's message
@@ -36,6 +67,7 @@ public class Logic {
         String command = parsedCommand[0];
         String firstArgument = parsedCommand[1];
         String secondArgument = parsedCommand[2];
+        String thirdArgument = parsedCommand[3];
 
         switch (command) {
             case "start":
@@ -142,7 +174,41 @@ public class Logic {
                 } else {
                     return "Пожалуйста, укажите название категории для просмотра записей.";
                 }
-
+            case "time_category":
+                if (!firstArgument.isEmpty() &&
+                        !secondArgument.isEmpty() && !thirdArgument.isEmpty()) {
+                    // Парсим дату и устанавливаем напоминание для категории
+                    reminder.set_category_reminder(
+                            firstArgument, secondArgument, thirdArgument);
+                    return "Напоминание установлено на 12:00";
+                } else {
+                    return "Пожалуйста, укажите категорию и дату.";
+                }
+            case "time_note":
+                if (!firstArgument.isEmpty() &&
+                        !secondArgument.isEmpty() && !thirdArgument.isEmpty()) {
+                    // Парсим дату и устанавливаем напоминание для записи
+                    reminder.set_note_reminder(firstArgument, secondArgument, thirdArgument);
+                    return "Напоминание установлено на 12:00";
+                } else {
+                    return "Пожалуйста, укажите запись и дату.";
+                }
+            case "delete_time_category":
+                if (!firstArgument.isEmpty()) {
+                    // Удаляем напоминание для категории
+                    reminder.deleteReminder();
+                    return "Напоминание убрано";
+                } else {
+                    return "Пожалуйста, укажите категорию для удаления напоминания.";
+                }
+            case "delete_time_note":
+                if (!firstArgument.isEmpty()) {
+                    // Удаляем напоминание для записи
+                    reminder.deleteReminder();
+                    return "Напоминание убрано";
+                } else {
+                    return "Пожалуйста, укажите запись для удаления напоминания.";
+                }
             default:
                 return "Такой команды нет или она не верна. Для получения списка команд используйте /help.";
         }
@@ -156,10 +222,11 @@ public class Logic {
     private String[] parseCommand(String message) {
         String[] words = message.trim().split("\\s+");
 
-        String[] parsedCommand = new String[3];
+        String[] parsedCommand = new String[4];
         parsedCommand[0] = "";  // Command
         parsedCommand[1] = "";  // First argument
         parsedCommand[2] = "";  // Second argument
+        parsedCommand[3] = "";  // Date
 
         if (words.length > 0) {
             parsedCommand[0] = words[0].replace("/", "");  // Убираем "/"
@@ -172,10 +239,22 @@ public class Logic {
         if (words.length > 2 && words[2].equalsIgnoreCase("to")) {
             // Если есть "to", и следующее слово не равно "to"
             if (words.length > 3) {
-                parsedCommand[2] = String.join(" ", Arrays.copyOfRange(words, 3, words.length));
+                parsedCommand[2] = words[3];
+            }
+
+            // Проверяем, есть ли еще слово (дата)
+            if (words.length > 4) {
+                parsedCommand[3] = String
+                        .join(" ", Arrays.copyOfRange(words, 4, words.length));
             }
         }
         return parsedCommand;
     }
 
+    public String getCurrentChatId() {
+        // Замените этот код на логику, которая возвращает текущий chatId
+        return "ваш_chat_id";
+    }
+
 }
+

@@ -1,69 +1,70 @@
 package ru.mathmeh.urfu.bot;
-import org.telegram.telegrambots.meta.api.objects.Update;
+
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Message;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import ru.mathmeh.urfu.bot.Logic.Config;
-import ru.mathmeh.urfu.bot.Logic.Logic;
+
+import ru.mathmeh.urfu.bot.Logic.*;
 
 import java.util.ArrayList;
 import java.util.List;
-/**
- * This is realization of Telegram Bot
- */
-public class TelegramBot extends TelegramLongPollingBot implements Bot {
+
+public class TelegramBot extends TelegramLongPollingBot {
+    private static TelegramBot instance;
 
     private final Logic logic;
-    private final Config config = new Config();
-    /**
-     * Constructor of Telegram Bot class
-     */
-    public TelegramBot() {
+    private final Config config;
+
+    private TelegramBot() {
         logic = new Logic();
+        config = new Config();
     }
-    /**
-     * This method gives us bot name which is read from config
-     * @return bot name
-     */
+
+    public static TelegramBot getInstance() {
+        if (instance == null) {
+            instance = new TelegramBot();
+        }
+        return instance;
+    }
+
     @Override
     public String getBotUsername() {
         return config.getBotName();
     }
-    /**
-     * This method gives us bot token which is read from config
-     * @return bot token
-     */
+
     @Override
     public String getBotToken() {
         return config.getBotToken();
     }
 
-    /**
-     * This is a telegram bot method which react on new messages
-     * @param update This is a telegram API object that helps us interact with chat events
-     */
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            Message message = update.getMessage();
-            long chatId = message.getChatId();
-            String userMessage = message.getText();
+            long chatId = update.getMessage().getChatId();
+            String userMessage = update.getMessage().getText();
 
             String response = logic.handleMessage(userMessage);
             sendStartMessageWithButtons(chatId, response);
         }
     }
 
-    /**
-     * Sends a message with text and a keyboard containing buttons to initiate interaction.
-     *
-     * @param chatId    The identifier of the chat where the message will be sent.
-     * @param response  The text of the message to be sent.
-     */
+    public void sendReminderMessage(long chatId, String message) {
+        SendMessage sendMessage = SendMessage.builder()
+                .chatId(String.valueOf(chatId))
+                .text(message)
+                .build();
+
+        try {
+            execute(sendMessage).getMessageId();
+        } catch (TelegramApiException e) {
+            System.err.println(e);
+        }
+    }
+
     private void sendStartMessageWithButtons(long chatId, String response) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
@@ -88,25 +89,6 @@ public class TelegramBot extends TelegramLongPollingBot implements Bot {
             execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
-        }
-    }
-
-    /**
-     * This method creates a message and send it to user
-     * @param id chatId or userId
-     * @param message text of send message
-     */
-    @Override
-    public void sendMessage(Long id, String message) {
-        SendMessage sendMessage = SendMessage.builder()
-                .chatId(id.toString())
-                .text(message)
-                .build();
-
-        try {
-            execute(sendMessage).getMessageId();
-        } catch (TelegramApiException e) {
-            System.err.println(e);
         }
     }
 }
