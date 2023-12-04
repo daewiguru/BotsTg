@@ -7,14 +7,29 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-
+/**
+ * The WeatherAPI class provides a simple interface to retrieve weather information
+ * using the OpenWeatherMap API.
+ */
 public class WeatherAPI {
+    /**
+     * The API key required for accessing the OpenWeatherMap API.
+     */
     private final String apiKey;
-
+    /**
+     * Constructs a WeatherAPI instance with the specified API key.
+     *
+     * @param apiKey The API key for accessing the OpenWeatherMap API.
+     */
     public WeatherAPI(String apiKey) {
         this.apiKey = apiKey;
     }
-
+    /**
+     * Retrieves weather information for a specified city.
+     *
+     * @param city The name of the city for which weather information is requested.
+     * @return A string containing the weather information, or an error message if the request fails.
+     */
     public String getWeather(String city) {
         HttpClient httpClient = HttpClient.newHttpClient();
 

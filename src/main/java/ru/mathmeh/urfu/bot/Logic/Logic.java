@@ -22,6 +22,11 @@ public class Logic {
     private final Printer printer;
     private final String weatherApiKey = "3e9b7ffa623b267ec9b8fbdcc94edf1d";
 
+    /**
+     * Constructor for the Logic class.
+     * Creates instances of NoteManager, Categories, Printer, and WeatherAPI.
+     * Initializes and associates them with the current Logic object.
+     */
     public Logic(){
         noteManager = new NoteManager();
         categories = new Categories();
@@ -29,7 +34,7 @@ public class Logic {
         weatherAPI = new WeatherAPI(weatherApiKey);
     }
     private String getWeather(String city) {
-        WeatherAPI weatherAPI = new WeatherAPI("3e9b7ffa623b267ec9b8fbdcc94edf1d"); // Замените на свой API-ключ
+        WeatherAPI weatherAPI = new WeatherAPI("3e9b7ffa623b267ec9b8fbdcc94edf1d"); //
 
         return weatherAPI.getWeather(city);
     }
