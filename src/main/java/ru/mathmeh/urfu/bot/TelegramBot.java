@@ -17,6 +17,7 @@ import java.util.List;
  */
 public class TelegramBot extends TelegramLongPollingBot implements Bot {
 
+
     private final Logic logic;
     private final Config config = new Config();
     /**

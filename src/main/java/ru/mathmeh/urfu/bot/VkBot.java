@@ -7,7 +7,7 @@ import api.longpoll.bots.model.objects.basic.Message;
 import ru.mathmeh.urfu.bot.Logic.Config;
 import ru.mathmeh.urfu.bot.Logic.Logic;
 
-public class VkBot extends LongPollBot {
+public class VkBot extends LongPollBot implements Bot{
     private final Config config = new Config();
     /**
      * Hidden logic
@@ -46,5 +46,10 @@ public class VkBot extends LongPollBot {
     @Override
     public String getAccessToken() {
         return config.getVkToken();
+    }
+
+    @Override
+    public void sendMessage(Long id, String message) {
+
     }
 }
