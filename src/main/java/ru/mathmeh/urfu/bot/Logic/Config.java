@@ -1,6 +1,4 @@
 package ru.mathmeh.urfu.bot.Logic;
-import java.io.FileInputStream;
-import java.util.Properties;
 
 /**
  * A config class for the bot (and in the future, the database)
@@ -8,7 +6,7 @@ import java.util.Properties;
  */
 
 public class Config {
-    public final String CONFIGURATION_BOT_FILE = "config/config.properties";
+    //public final String CONFIGURATION_BOT_FILE = "config/config.properties";
     //TODO create a database, and link it with bot
     //public static final String CONFIGURATION_DB_FILE = " ";
     /**
@@ -46,7 +44,7 @@ public class Config {
      */
 
     public void load() {
-        Properties botSettings = new Properties();
+        /*Properties botSettings = new Properties();
         try (FileInputStream is = new FileInputStream(CONFIGURATION_BOT_FILE)){
             botSettings.load(is);
             is.close();
@@ -54,9 +52,11 @@ public class Config {
         } catch (Exception e){
             System.out.print("Config was not load");
         }
-        vkToken = botSettings.getProperty("VkToken", " ");
-        botName = botSettings.getProperty("BotName", " ");// TODO fill form
-        botToken = botSettings.getProperty("BotToken", " ");
+
+         */
+        vkToken = System.getenv("VK_BOT_TOKEN");
+        botName = System.getenv("BOT_NAME");
+        botToken = System.getenv("TG_BOT_TOKEN");
     }
 
 }
