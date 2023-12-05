@@ -186,8 +186,13 @@ public class LogicTest {
      */
     @Test
     public void testAddToUnexistCategoryCommand() {
+        // Verify that there are still no categories present
+        String listCategoriesResponseAfter = logic.handleMessage("/list_categories");
+        assertEquals("", listCategoriesResponseAfter);
+
         String response = logic.handleMessage("/added test1 to nonExistentCategory");
         assertEquals("Указанной категории не существует.", response);
+
     }
 
     /**
@@ -201,6 +206,12 @@ public class LogicTest {
         logic.handleMessage("/create_category testCategory");
         String response = logic.handleMessage("/added test1 to testCategory");
         assertEquals("Запись добавлена в категорию!", response);
+        String listNotesResponse = logic.handleMessage("/list_notes testCategory");
+        String expected = """
+            Записи в категории "testCategory":
+            - test1
+            """;
+        assertEquals(expected, listNotesResponse);
     }
 
     /**
@@ -227,6 +238,10 @@ public class LogicTest {
      */
     @Test
     public void testEditUnexistNoteCommand() {
+        // Verify that there are no notes present
+        String tableResponse = logic.handleMessage("/table");
+        assertEquals("Вот ваши записи:\n", tableResponse);
+
         String response = logic.handleMessage("/edit 999 New Text");
         assertEquals("Записи с номером 999 не существует.", response);
     }
