@@ -98,4 +98,17 @@ public class Categories {
             return Collections.emptyList();
         }
     }
+
+    /**
+     * Checks if a category with the specified name exists.
+     *
+     * @param categoryName The name of the category to check for existence.
+     * @return {@code true} if the category exists, {@code false} otherwise.
+     */
+    public boolean existCategory(String categoryName) {
+        if (categories.get(categoryName) != null){
+            return true;
+        }
+        return false;
+    }
 }

@@ -41,6 +41,7 @@ public class Logic {
             case "start":
                 return "Привет! Я простой бот для записей. Вы можете создавать, управлять категориями и записями.\n" +
                         "Доступные команды: /help";
+
             case "help":
                 return """
                         Доступные команды:
@@ -54,6 +55,7 @@ public class Logic {
                         /edit_category - изменение категории ✏️
                         /list_notes - вывод категории и её содержания 📚
                         """;
+
             case "add":
                 if (pars.length >= 2) {
                     String text = message.substring(command.length() + 1);
@@ -62,31 +64,50 @@ public class Logic {
                 } else {
                     return "Пожалуйста, укажите запись.";
                 }
+
             case "edit":
                 if (pars.length >= 2) {
+                    int id;
                     try {
-                        int id = Integer.parseInt(parsedCommand[1]);
-                        String text = message.substring(command.length() + 2 + parsedCommand[1].length());
-                        noteManager.editNote(id, text);
-                        return "Запись изменена!";
+                        id = Integer.parseInt(parsedCommand[1]);
                     } catch (NumberFormatException e) {
-                        return "Неревный номер записи.";
+                        return "Неверный номер записи.";
+                    }
+
+                    if (noteManager.existNote(id)) {
+                        try {
+                            String text = message.substring(command.length() + 2 + parsedCommand[1].length());
+                            noteManager.editNote(id, text);
+                            return "Запись изменена!";
+                        } catch (NumberFormatException e) {
+                            return "Неверный номер записи.";
+                            // TODO дописать тесты
+                        }
+                    } else {
+                        return "Записи с номером " + id + " не существует.";
                     }
                 } else {
                     return "Пожалуйста введите номер записи и изменения";
                 }
+
             case "del":
                 if (pars.length >= 2) {
+                    int id; // Переменная id объявлена вне блока try
                     try {
-                        int id = Integer.parseInt(parsedCommand[1]);
-                        noteManager.deleteNote(id);
-                        return "Запись удалена!";
+                        id = Integer.parseInt(parsedCommand[1]);
                     } catch (NumberFormatException e) {
                         return "Неверный номер записи.";
                     }
+
+                    if (noteManager.existNote(id)) {
+                        noteManager.deleteNote(id);
+                        return "Запись удалена!";
+                    }
+                    // TODO тесты дописать
                 } else {
                     return "Укажите номер записи для удаления.";
                 }
+
             case  "table":
                 List <Note> notes = noteManager.getNotes();
                 StringBuilder response = new StringBuilder("Вот ваши записи:\n");
@@ -94,13 +115,20 @@ public class Logic {
                     response.append(note.getId()).append(".").append(note.getText()).append("\n");
                 }
                 return response.toString();
+
             case "added":
-                if (!firstArgument.isEmpty()) {
-                    categories.addNoteToCategory(firstArgument,secondArgument);
-                    return "Запись добавлена в категорию!";
-                } else {
-                    return "Пожалуйста, укажите запись.";
+                if (firstArgument.isEmpty() || secondArgument.isEmpty()) {
+                    return "Пожалуйста, укажите исходную запись и категорию.";
                 }
+
+                if (!categories.existCategory(secondArgument)) {
+                    return "Указанной категории не существует.";
+                }
+
+                // Дополнительная логика добавления записи в категорию
+                categories.addNoteToCategory(firstArgument, secondArgument);
+
+                return "Запись добавлена в категорию!";
 
             case "create_category":
                 if (!firstArgument.isEmpty()) {
@@ -114,6 +142,7 @@ public class Logic {
                 return categories.listCategories();
 
             case "delete_category":
+                //TODO добавить проверку и тесты
                 if (!firstArgument.isEmpty()) {
                     categories.deleteCategory(firstArgument);
                     return "Категория \"" + firstArgument + "\" удалена.";
@@ -123,8 +152,14 @@ public class Logic {
 
             case "edit_category":
                 if (!firstArgument.isEmpty() && !secondArgument.isEmpty()) {
-                    categories.editCategory(firstArgument, secondArgument);
-                    return "Название категории успешно изменено.";
+                    if(categories.existCategory(firstArgument)){
+                        categories.editCategory(firstArgument, secondArgument);
+                        return "Название категории успешно изменено.";
+                    } else {
+                        return "Категория, которую вы хотите изменить, не существует";
+                    }
+
+                    //TODO вывод на изменении не существующей категории
                 } else {
                     return "Пожалуйста, укажите старое и новое название категории.";
                 }

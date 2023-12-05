@@ -55,7 +55,7 @@ public class Config {
             System.out.print("Config was not load");
         }
         vkToken = botSettings.getProperty("VkToken", " ");
-        botName = botSettings.getProperty("BotName", " ");// TODO fill form
+        botName = botSettings.getProperty("BotName", " ");
         botToken = botSettings.getProperty("BotToken", " ");
     }
 
