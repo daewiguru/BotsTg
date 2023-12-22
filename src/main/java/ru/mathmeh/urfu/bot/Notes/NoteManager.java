@@ -1,5 +1,4 @@
-package ru.mathmeh.urfu.bot;
-
+package ru.mathmeh.urfu.bot.Notes;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -59,4 +58,19 @@ public class NoteManager {
     public void deleteNote(int id) {
         notes.remove(id);
     }
+
+    /**
+     * Checks if a note with the specified ID exists.
+     *
+     * @param id The ID of the note to check for existence.
+     * @return {@code true} if the note exists, {@code false} otherwise.
+     */
+    public boolean existNote(int id){
+        if (notes.get(id) != null){
+            return true;
+        }
+        return false;
+    }
+
 }
+

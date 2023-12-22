@@ -1,4 +1,4 @@
-package ru.mathmeh.urfu.bot;
+package ru.mathmeh.urfu.bot.Notes;
 
 /**
  * The Note class represents a single note with a unique identifier and text content.
